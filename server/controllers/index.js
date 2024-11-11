@@ -101,6 +101,19 @@ const hostPage3 = (req, res) => {
   res.render('page3');
 };
 
+const hostPage4 = async (req, res) => {
+  try {
+    const doc = await Dog.find({}).lean().exec();
+    res.render('page4', {
+      dogs: doc,
+      title: 'Page 4'
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: 'failed to find dogs' });
+  }
+};
+
 // Get name will return the name of the last added cat.
 const getName = async (req, res) => {
   try {
@@ -346,6 +359,7 @@ module.exports = {
   page1: hostPage1,
   page2: hostPage2,
   page3: hostPage3,
+  page4: hostPage4,
   getName,
   setName,
   updateLast,
