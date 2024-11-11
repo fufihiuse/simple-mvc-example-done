@@ -310,16 +310,15 @@ const incrementDogAge = async (req, res) => {
     return res.status(400).json({ error: 'Name is required to increment age' });
   }
 
-  const updatePromise = Dog.findOneAndUpdate({ name: req.query.name }, { $inc: { age: 1 } }, {
-    returnDocument: 'after',
-  }).lean().exec();
-
   let doc;
 
   try {
-    doc = await updatePromise;
+    doc = await Dog.findOneAndUpdate({ name: req.query.name }, { $inc: { age: 1 } }, {
+      returnDocument: 'after',
+    }).lean().exec();
+
     if (!doc) {
-      return res.status(404).json({ error: `No dogs found with name ${req.query.name}` });
+      return res.status(404).json({ error: `No dogs found with name "${req.query.name}"` });
     }
 
     return res.json({
